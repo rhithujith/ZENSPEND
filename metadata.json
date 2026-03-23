@@ -1,0 +1,5 @@
+{
+  "name": "ZenSpend",
+  "description": "A gamified personal finance and lifestyle app for Gen Z and Millennials.",
+  "requestFramePermissions": ["geolocation"]
+}
