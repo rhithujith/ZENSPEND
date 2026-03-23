@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image, Switch, Modal } from 'react-native';
-import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { useApp } from '../context/AppContext';
-import Svg, { G, Path, Circle } from 'react-native-svg';
-import { Settings, LogOut, ChevronRight, History, Zap, ShieldAlert, UtensilsCrossed, Sparkles } from 'lucide-react-native';
+import { Settings, LogOut, ChevronRight, History, Zap, ShieldAlert, UtensilsCrossed, Sparkles } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 export const Profile: React.FC = () => {
@@ -32,106 +29,99 @@ export const Profile: React.FC = () => {
   let currentAngle = 0;
 
   return (
-    <ScrollView className="flex-1 bg-black p-6" contentContainerStyle={{ paddingBottom: 100 }}>
+    <div className="flex-1 overflow-y-auto bg-black p-6 pb-24">
       {/* Header */}
-      <View className="flex-row justify-between items-center mb-8">
-        <Text className={cn("text-3xl font-serif italic text-white", highLegibility && "font-sans not-italic font-bold")}>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className={cn("text-3xl font-serif italic text-white", highLegibility && "font-sans not-italic font-bold")}>
           My Profile
-        </Text>
-        <View className="flex-row gap-2">
-          <TouchableOpacity 
-            onPress={toggleLegibility}
-            className={cn("w-10 h-10 bg-white/10 rounded-xl items-center justify-center", highLegibility && "bg-white")}
+        </h1>
+        <div className="flex gap-2">
+          <button
+            onClick={toggleLegibility}
+            className={cn("w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center cursor-pointer border-none", highLegibility && "bg-white")}
           >
-            <Text className={cn("text-xs font-bold text-white/60", highLegibility && "text-black")}>Aa</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="w-10 h-10 bg-white/10 rounded-xl items-center justify-center">
+            <span className={cn("text-xs font-bold text-white/60", highLegibility && "text-black")}>Aa</span>
+          </button>
+          <button className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center cursor-pointer border-none">
             <Settings size={20} color="rgba(255,255,255,0.6)" />
-          </TouchableOpacity>
-        </View>
-      </View>
+          </button>
+        </div>
+      </div>
 
       {/* User Info */}
-      <View className="flex-row items-center gap-6 mb-8">
-        <View className="w-24 h-24 rounded-[40px] overflow-hidden border-2 border-white/10 shadow-2xl relative">
-          <Image 
-            source={{ uri: "https://picsum.photos/seed/alex/200/200" }} 
-            className="w-full h-full grayscale"
-            style={{ opacity: 0.8 }}
+      <div className="flex items-center gap-6 mb-8">
+        <div className="w-24 h-24 rounded-[40px] overflow-hidden border-2 border-white/10 shadow-2xl relative shrink-0">
+          <img
+            src="https://picsum.photos/seed/alex/200/200"
+            alt="Profile"
+            className="w-full h-full object-cover grayscale opacity-80"
           />
-          <View className="absolute inset-0 bg-black/20" />
-        </View>
-        <View className="flex-1">
-          <Text className={cn("text-2xl font-serif italic text-white", highLegibility && "font-sans not-italic font-bold")}>
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+        <div className="flex-1">
+          <p className={cn("text-2xl font-serif italic text-white", highLegibility && "font-sans not-italic font-bold")}>
             {user?.displayName || "Alex Rivera"}
-          </Text>
-          <View className="flex-row items-center gap-3 mt-2">
-            <Text className="text-white/20 text-[10px] font-bold uppercase tracking-widest">Joined 2023</Text>
-            <View className="flex-row items-center gap-1.5">
-              <View className={cn("w-1.5 h-1.5 rounded-full", isFirebaseActive ? "bg-emerald-500" : "bg-amber-500")} />
-              <Text className="text-white/20 text-[8px] font-bold uppercase tracking-widest">
+          </p>
+          <div className="flex items-center gap-3 mt-2">
+            <span className="text-white/20 text-[10px] font-bold uppercase tracking-widest">Joined 2023</span>
+            <div className="flex items-center gap-1.5">
+              <div className={cn("w-1.5 h-1.5 rounded-full", isFirebaseActive ? "bg-emerald-500" : "bg-amber-500")} />
+              <span className="text-white/20 text-[8px] font-bold uppercase tracking-widest">
                 {isFirebaseActive ? (user?.isAnonymous ? "Guest Mode" : "Cloud Synced") : "Local Mode"}
-              </Text>
-            </View>
-          </View>
+              </span>
+            </div>
+          </div>
           {isFirebaseActive && user?.isAnonymous && (
-            <TouchableOpacity
-              onPress={loginWithGoogle}
-              className="mt-4 flex-row items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/5"
+            <button
+              onClick={loginWithGoogle}
+              className="mt-4 flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/5 cursor-pointer hover:bg-white/10 transition-colors"
             >
-              <Image source={{ uri: "https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" }} className="w-3 h-3" />
-              <Text className="text-white/60 text-[10px] font-bold uppercase tracking-widest">Sync with Google</Text>
-            </TouchableOpacity>
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-3 h-3" />
+              <span className="text-white/60 text-[10px] font-bold uppercase tracking-widest">Sync with Google</span>
+            </button>
           )}
-        </View>
-      </View>
+        </div>
+      </div>
 
       {/* Groq Advice Section */}
-      <View className="space-y-4 mb-8">
-        <Text className="font-medium text-white/40 text-[10px] uppercase tracking-widest px-1">AI Financial Coach</Text>
-        <View className={cn("bg-white/5 p-6 rounded-[32px] border border-white/5 space-y-4", highLegibility && "bg-white/10")}>
-          <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center gap-3">
-              <View className="w-10 h-10 bg-white/5 rounded-xl items-center justify-center">
+      <div className="space-y-4 mb-8">
+        <p className="font-medium text-white/40 text-[10px] uppercase tracking-widest px-1">AI Financial Coach</p>
+        <div className={cn("bg-white/5 p-6 rounded-[32px] border border-white/5", highLegibility && "bg-white/10")}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center">
                 <Sparkles size={20} color="white" />
-              </View>
-              <View>
-                <Text className="text-white font-bold text-sm">Groq Intelligence</Text>
-                <Text className="text-white/30 text-[10px] uppercase tracking-wider">Llama 3.3 Powered</Text>
-              </View>
-            </View>
-            <TouchableOpacity
-              onPress={handleAskGroq}
+              </div>
+              <div>
+                <p className="text-white font-bold text-sm">Groq Intelligence</p>
+                <p className="text-white/30 text-[10px] uppercase tracking-wider">Llama 3.3 Powered</p>
+              </div>
+            </div>
+            <button
+              onClick={handleAskGroq}
               disabled={isAsking}
-              className={cn("bg-white px-4 py-2 rounded-xl", isAsking && "opacity-50")}
+              className={cn("bg-white px-4 py-2 rounded-xl cursor-pointer border-none hover:bg-white/90 transition-colors", isAsking && "opacity-50")}
             >
-              <Text className="text-black text-[10px] font-bold uppercase tracking-widest">
+              <span className="text-black text-[10px] font-bold uppercase tracking-widest">
                 {isAsking ? "Thinking..." : "Get Tip"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          
-          {advice && (
-            <View className="pt-4 border-t border-white/5">
-              <Animated.View
-                entering={FadeIn}
-                exiting={FadeOut}
-              >
-                <Text className="text-white/60 text-sm italic leading-relaxed">
-                  "{advice}"
-                </Text>
-              </Animated.View>
-            </View>
-          )}
-        </View>
-      </View>
+              </span>
+            </button>
+          </div>
 
-      {/* Money Flow Chart */}
-      <View className={cn("bg-white/5 p-8 rounded-[40px] border border-white/5 mb-8", highLegibility && "bg-white/10")}>
-        <Text className="font-medium text-white/40 text-[10px] uppercase tracking-widest mb-6">Where my money goes</Text>
-        <View className="h-64 w-full items-center justify-center">
-          <Svg height="200" width="200" viewBox="0 0 200 200">
-            <G rotation="-90" origin="100, 100">
+          {advice && (
+            <div className="pt-4 border-t border-white/5 mt-4">
+              <p className="text-white/60 text-sm italic leading-relaxed">"{advice}"</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Money Flow Chart (SVG pie chart) */}
+      <div className={cn("bg-white/5 p-8 rounded-[40px] border border-white/5 mb-8", highLegibility && "bg-white/10")}>
+        <p className="font-medium text-white/40 text-[10px] uppercase tracking-widest mb-6">Where my money goes</p>
+        <div className="flex items-center justify-center h-64">
+          <svg height="200" width="200" viewBox="0 0 200 200">
+            <g transform="rotate(-90 100 100)">
               {data.map((item, index) => {
                 const angle = (item.value / total) * 360;
                 const x1 = 100 + 80 * Math.cos((currentAngle * Math.PI) / 180);
@@ -140,122 +130,108 @@ export const Profile: React.FC = () => {
                 const y2 = 100 + 80 * Math.sin(((currentAngle + angle) * Math.PI) / 180);
                 const largeArcFlag = angle > 180 ? 1 : 0;
                 const d = `M 100 100 L ${x1} ${y1} A 80 80 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
-                const path = (
-                  <Path
-                    d={d}
-                    fill={item.color}
-                    stroke="black"
-                    strokeWidth="2"
-                  />
-                );
                 currentAngle += angle;
-                return path;
+                return (
+                  <path key={index} d={d} fill={item.color} stroke="black" strokeWidth="2" />
+                );
               })}
-              <Circle cx="100" cy="100" r="60" fill="black" />
-            </G>
-          </Svg>
-        </View>
-        <View className="flex-row justify-between mt-6">
+              <circle cx="100" cy="100" r="60" fill="black" />
+            </g>
+          </svg>
+        </div>
+        <div className="flex justify-between mt-6">
           {data.map((item) => (
-            <View key={item.name} className="flex-1 items-center">
-              <Text className="text-[8px] font-bold text-white/20 uppercase tracking-[0.2em] mb-2">{item.name}</Text>
-              <Text className={cn("font-serif italic text-lg text-white", highLegibility && "font-sans not-italic font-bold")}>{item.value}%</Text>
-              <View className="w-full h-0.5 rounded-full mt-3" style={{ backgroundColor: item.color, opacity: 0.3 }} />
-            </View>
+            <div key={item.name} className="flex-1 flex flex-col items-center">
+              <span className="text-[8px] font-bold text-white/20 uppercase tracking-[0.2em] mb-2">{item.name}</span>
+              <span className={cn("font-serif italic text-lg text-white", highLegibility && "font-sans not-italic font-bold")}>{item.value}%</span>
+              <div className="w-full h-0.5 rounded-full mt-3" style={{ backgroundColor: item.color, opacity: 0.3 }} />
+            </div>
           ))}
-        </View>
-      </View>
+        </div>
+      </div>
 
       {/* Dynamic Plan */}
-      <View className={cn("bg-white/5 rounded-[32px] p-8 mb-8 relative overflow-hidden border border-white/5", highLegibility && "bg-white/10")}>
-        <View className="relative z-10">
-          <View className="flex-row items-center gap-3 mb-4">
+      <div className={cn("bg-white/5 rounded-[32px] p-8 mb-8 relative overflow-hidden border border-white/5", highLegibility && "bg-white/10")}>
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-4">
             <Zap size={18} color="rgba(255,255,255,0.4)" />
-            <Text className="font-medium text-xs text-white uppercase tracking-[0.2em]">My Money Plan</Text>
-          </View>
-          <Text className="text-white/50 text-sm leading-relaxed font-light italic">
-            "{plan}"
-          </Text>
-        </View>
-        <View className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-2xl" />
-      </View>
+            <span className="font-medium text-xs text-white uppercase tracking-[0.2em]">My Money Plan</span>
+          </div>
+          <p className="text-white/50 text-sm leading-relaxed font-light italic">"{plan}"</p>
+        </div>
+        <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+      </div>
 
-      {/* Exam Mode Toggle */}
-      <View className={cn("bg-white/5 p-6 rounded-[32px] border border-white/5 flex-row items-center justify-between mb-8", highLegibility && "bg-white/10")}>
-        <View className="flex-row items-center gap-5">
-          <View className={cn(
-            "w-12 h-12 rounded-2xl items-center justify-center",
-            isExamModeActive ? "bg-white" : "bg-white/5"
-          )}>
+      {/* Study Mode Toggle */}
+      <div className={cn("bg-white/5 p-6 rounded-[32px] border border-white/5 flex items-center justify-between mb-8", highLegibility && "bg-white/10")}>
+        <div className="flex items-center gap-5">
+          <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center", isExamModeActive ? "bg-white" : "bg-white/5")}>
             <ShieldAlert size={24} color={isExamModeActive ? "black" : "rgba(255,255,255,0.2)"} />
-          </View>
-          <View>
-            <Text className="font-bold text-white text-sm">Study Mode</Text>
-            <Text className="text-[10px] text-white/30 uppercase tracking-widest">Save extra money while studying</Text>
-          </View>
-        </View>
-        <Switch
-          value={isExamModeActive}
-          onValueChange={(value) => setExamMode(value)}
-          trackColor={{ false: 'rgba(255,255,255,0.1)', true: 'white' }}
-          thumbColor={isExamModeActive ? 'black' : 'rgba(255,255,255,0.2)'}
-        />
-      </View>
+          </div>
+          <div>
+            <p className="font-bold text-white text-sm">Study Mode</p>
+            <p className="text-[10px] text-white/30 uppercase tracking-widest">Save extra money while studying</p>
+          </div>
+        </div>
+        {/* HTML toggle switch */}
+        <button
+          onClick={() => setExamMode(!isExamModeActive)}
+          className={`relative w-12 h-6 rounded-full border-none cursor-pointer transition-colors ${isExamModeActive ? 'bg-white' : 'bg-white/10'}`}
+        >
+          <div className={`absolute top-1 w-4 h-4 rounded-full transition-all ${isExamModeActive ? 'right-1 bg-black' : 'left-1 bg-white/20'}`} />
+        </button>
+      </div>
 
       {/* Transaction History Accordion */}
-      <View className="space-y-4 mb-8">
-        <TouchableOpacity 
-          onPress={() => setShowHistory(!showHistory)}
-          className="flex-row justify-between items-center px-1"
+      <div className="space-y-4 mb-8">
+        <button
+          onClick={() => setShowHistory(!showHistory)}
+          className="w-full flex justify-between items-center px-1 bg-transparent border-none cursor-pointer"
         >
-          <View className="flex-row items-center gap-2">
+          <div className="flex items-center gap-2">
             <History size={14} color="rgba(255,255,255,0.4)" />
-            <Text className="font-medium text-white/40 text-[10px] uppercase tracking-widest">
-              Recent Spending
-            </Text>
-          </View>
-          <Animated.View style={{ transform: [{ rotate: showHistory ? '90deg' : '0deg' }] }}>
-            <ChevronRight size={20} color="rgba(255,255,255,0.2)" />
-          </Animated.View>
-        </TouchableOpacity>
-        
+            <span className="font-medium text-white/40 text-[10px] uppercase tracking-widest">Recent Spending</span>
+          </div>
+          <ChevronRight
+            size={20}
+            color="rgba(255,255,255,0.2)"
+            style={{ transform: showHistory ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}
+          />
+        </button>
+
         {showHistory && (
-          <View className="space-y-3">
-            <Animated.View 
-              entering={FadeIn}
-              exiting={FadeOut}
-              layout={LinearTransition}
-            >
-              {transactions.map((t) => (
-                <View 
-                  key={t.id} 
-                  className={cn("bg-white/5 p-5 rounded-[32px] flex-row justify-between items-center border border-white/5 mb-3", highLegibility && "bg-white/10")}
-                >
-                  <View className="flex-row items-center gap-4">
-                    <View className="w-10 h-10 bg-white/5 rounded-xl items-center justify-center">
-                      <UtensilsCrossed size={18} color="rgba(255,255,255,0.2)" />
-                    </View>
-                    <View>
-                      <Text className="font-bold text-white text-sm">{t.title}</Text>
-                      <Text className="text-[10px] text-white/30 uppercase tracking-widest">{t.date}</Text>
-                    </View>
-                  </View>
-                  <Text className={cn("font-serif italic text-lg text-white", highLegibility && "font-sans not-italic font-bold")}>-${t.amount}</Text>
-                </View>
-              ))}
-            </Animated.View>
-          </View>
+          <div className="flex flex-col gap-3">
+            {transactions.map((t) => (
+              <div
+                key={t.id}
+                className={cn("bg-white/5 p-5 rounded-[32px] flex justify-between items-center border border-white/5", highLegibility && "bg-white/10")}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center">
+                    <UtensilsCrossed size={18} color="rgba(255,255,255,0.2)" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-white text-sm">{t.title}</p>
+                    <p className="text-[10px] text-white/30 uppercase tracking-widest">{t.date}</p>
+                  </div>
+                </div>
+                <span className={cn("font-serif italic text-lg text-white", highLegibility && "font-sans not-italic font-bold")}>
+                  -${t.amount}
+                </span>
+              </div>
+            ))}
+          </div>
         )}
-      </View>
+      </div>
 
       {/* Logout */}
-      <TouchableOpacity 
-        onPress={logout}
-        className="w-full flex-row items-center justify-center gap-3 py-6"
+      <button
+        onClick={logout}
+        className="w-full flex items-center justify-center gap-3 py-6 bg-transparent border-none cursor-pointer hover:opacity-70 transition-opacity"
       >
         <LogOut size={18} color="rgba(255,255,255,0.2)" />
-        <Text className="text-white/20 font-bold text-[10px] uppercase tracking-[0.3em]">Log Out</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <span className="text-white/20 font-bold text-[10px] uppercase tracking-[0.3em]">Log Out</span>
+      </button>
+    </div>
   );
 };

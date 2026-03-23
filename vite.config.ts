@@ -11,11 +11,13 @@ export default defineConfig(({mode}) => {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
     resolve: {
-      alias: {
-        '@': path.resolve(__dirname, '.'),
-        'react-native': path.resolve(__dirname, 'src/mocks/react-native.js'),
-        'react-native-web/Libraries/Utilities/codegenNativeComponent': 'react-native-web/dist/modules/UnimplementedView',
-      },
+      alias: [
+        { find: '@', replacement: path.resolve(__dirname, '.') },
+        { find: 'react-native-reanimated', replacement: path.resolve(__dirname, 'src/mocks/react-native-reanimated.js') },
+        { find: 'react-native-web/Libraries/Utilities/codegenNativeComponent', replacement: 'react-native-web/dist/modules/UnimplementedView' },
+        // Must come last: catches all react-native/* sub-path imports
+        { find: /^react-native($|\/.*)/, replacement: path.resolve(__dirname, 'src/mocks/react-native.js') },
+      ],
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.

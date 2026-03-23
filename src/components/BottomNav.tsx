@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Home, Utensils, User } from 'lucide-react-native';
+import { Home, Utensils, User } from 'lucide-react';
 
 interface BottomNavProps {
   activeTab: string;
@@ -15,34 +14,33 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
   ];
 
   return (
-    <View className="bg-[#1A1A1A] rounded-t-[40px] px-8 pt-4 pb-8 border-t border-white/10 shadow-2xl">
-      <View className="flex-row justify-between items-center max-w-lg mx-auto">
+    <div className="bg-[#1A1A1A] rounded-t-[40px] px-8 pt-4 pb-8 border-t border-white/10 shadow-2xl">
+      <div className="flex justify-between items-center max-w-lg mx-auto">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
-            <TouchableOpacity
+            <button
               key={tab.id}
-              onPress={() => setActiveTab(tab.id)}
-              className="items-center gap-1"
-              activeOpacity={0.7}
+              onClick={() => setActiveTab(tab.id)}
+              className="flex flex-col items-center gap-1 relative cursor-pointer bg-transparent border-none outline-none"
             >
-              <View className={`p-2 rounded-2xl ${isActive ? 'bg-white/10' : ''}`}>
-                <Icon 
-                  size={20} 
-                  color={isActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.2)'} 
+              <div className={`p-2 rounded-2xl ${isActive ? 'bg-white/10' : ''}`}>
+                <Icon
+                  size={20}
+                  color={isActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.2)'}
                 />
-              </View>
-              <Text className={`text-[8px] font-bold uppercase tracking-[0.2em] ${isActive ? 'text-white' : 'text-white/20'}`}>
+              </div>
+              <span className={`text-[8px] font-bold uppercase tracking-[0.2em] ${isActive ? 'text-white' : 'text-white/20'}`}>
                 {tab.label}
-              </Text>
+              </span>
               {isActive && (
-                <View className="absolute -bottom-2 w-1 h-1 bg-white rounded-full" />
+                <div className="absolute -bottom-2 w-1 h-1 bg-white rounded-full" />
               )}
-            </TouchableOpacity>
+            </button>
           );
         })}
-      </View>
-    </View>
+      </div>
+    </div>
   );
 };

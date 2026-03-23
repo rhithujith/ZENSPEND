@@ -1,13 +1,22 @@
 import Groq from "groq-sdk";
 
-const groq = new Groq({
-  apiKey: import.meta.env.VITE_GROQ_API_KEY,
-  dangerouslyAllowBrowser: true // Required for client-side usage
-});
+let groqClient: Groq | null = null;
+
+const getGroqClient = () => {
+  if (!groqClient) {
+    const apiKey = import.meta.env.VITE_GROQ_API_KEY;
+    if (!apiKey) return null;
+    groqClient = new Groq({ apiKey, dangerouslyAllowBrowser: true });
+  }
+  return groqClient;
+};
 
 export const getFinancialAdvice = async (prompt: string) => {
   try {
-    const chatCompletion = await groq.chat.completions.create({
+    const client = getGroqClient();
+    if (!client) return "Set up your Groq API key to get AI-powered financial advice! 🔑";
+
+    const chatCompletion = await client.chat.completions.create({
       messages: [
         {
           role: "system",

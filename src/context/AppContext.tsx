@@ -4,7 +4,12 @@ import { auth, db, isFirebaseConfigured, googleProvider } from '../lib/firebase'
 import { onAuthStateChanged, signInAnonymously, signOut, User, signInWithPopup, linkWithPopup } from 'firebase/auth';
 import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import { getFinancialAdvice } from '../services/groqService';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// Web-compatible AsyncStorage shim using localStorage
+const AsyncStorage = {
+  getItem: (key: string) => Promise.resolve(localStorage.getItem(key)),
+  setItem: (key: string, value: string) => Promise.resolve(localStorage.setItem(key, value)),
+  removeItem: (key: string) => Promise.resolve(localStorage.removeItem(key)),
+};
 
 interface AppContextType extends AppState {
   user: User | null;

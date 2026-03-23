@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Modal, KeyboardAvoidingView, Platform } from 'react-native';
 import { useApp } from '../context/AppContext';
-import { Plus, Target, Trash2, X, CheckCircle2 } from 'lucide-react-native';
-import Animated, { FadeIn, FadeOut, Layout } from 'react-native-reanimated';
+import { Plus, Target, Trash2, X, CheckCircle2 } from 'lucide-react';
 
 export const Goals: React.FC = () => {
   const { goals, addGoal, deleteGoal, highLegibility } = useApp();
@@ -20,137 +18,117 @@ export const Goals: React.FC = () => {
   };
 
   return (
-    <View className="space-y-6">
-      <View className="flex-row justify-between items-center px-1">
-        <View className="flex-row items-center gap-2">
+    <div className="space-y-6">
+      <div className="flex justify-between items-center px-1">
+        <div className="flex items-center gap-2">
           <Target size={14} color="rgba(255, 255, 255, 0.6)" />
-          <Text className="font-medium text-white/60 text-xs uppercase tracking-widest">
-            My Goals
-          </Text>
-        </View>
-        <TouchableOpacity 
-          onPress={() => setIsAdding(true)}
-          className={`w-8 h-8 bg-white/10 rounded-full items-center justify-center ${highLegibility ? 'border-2 border-white' : ''}`}
+          <span className="font-medium text-white/60 text-xs uppercase tracking-widest">My Goals</span>
+        </div>
+        <button
+          onClick={() => setIsAdding(true)}
+          className={`w-8 h-8 bg-white/10 rounded-full flex items-center justify-center cursor-pointer border-none hover:bg-white/20 transition-colors ${highLegibility ? 'border-2 border-white' : ''}`}
         >
           <Plus size={18} color="white" />
-        </TouchableOpacity>
-      </View>
+        </button>
+      </div>
 
-      <View className="gap-4">
+      <div className="flex flex-col gap-4">
         {goals.map((goal) => {
           const progress = (goal.currentAmount / goal.targetAmount) * 100;
           return (
-            <View key={goal.id} className={`bg-white/5 p-5 rounded-[32px] border border-white/5 relative ${highLegibility ? 'border-2 border-white' : ''}`}>
-              <Animated.View 
-                layout={Layout}
-                entering={FadeIn}
-              >
-                <View className="flex-row justify-between items-start mb-4">
-                  <View className="flex-row items-center gap-4">
-                    <View className="w-10 h-10 bg-white/5 rounded-xl items-center justify-center">
-                      <Target size={20} color="rgba(255, 255, 255, 0.3)" />
-                    </View>
-                    <View>
-                      <Text className={`font-serif italic text-lg text-white ${highLegibility ? 'font-sans not-italic font-bold text-base' : ''}`}>
-                        {goal.title}
-                      </Text>
-                      <Text className="text-[9px] text-white/30 uppercase tracking-widest">
-                        Goal: ${goal.targetAmount.toLocaleString()}
-                      </Text>
-                    </View>
-                  </View>
-                  <TouchableOpacity 
-                    onPress={() => deleteGoal(goal.id)}
-                    className="p-2"
-                  >
-                    <Trash2 size={18} color="rgba(255, 255, 255, 0.1)" />
-                  </TouchableOpacity>
-                </View>
+            <div key={goal.id} className={`bg-white/5 p-5 rounded-[32px] border border-white/5 relative ${highLegibility ? 'border-2 border-white' : ''}`}>
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center">
+                    <Target size={20} color="rgba(255, 255, 255, 0.3)" />
+                  </div>
+                  <div>
+                    <p className={`font-serif italic text-lg text-white ${highLegibility ? 'font-sans not-italic font-bold text-base' : ''}`}>
+                      {goal.title}
+                    </p>
+                    <p className="text-[9px] text-white/30 uppercase tracking-widest">
+                      Goal: ${goal.targetAmount.toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => deleteGoal(goal.id)}
+                  className="p-2 cursor-pointer bg-transparent border-none hover:opacity-70"
+                >
+                  <Trash2 size={18} color="rgba(255, 255, 255, 0.1)" />
+                </button>
+              </div>
 
-                <View className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden mb-3">
-                  <View 
-                    style={{ width: `${Math.min(progress, 100)}%` }}
-                    className={`h-full rounded-full ${progress >= 100 ? 'bg-emerald-500' : 'bg-white'}`}
-                  />
-                </View>
-                <View className="flex-row justify-between">
-                  <Text className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
-                    ${goal.currentAmount} saved
-                  </Text>
-                  <Text className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">
-                    {Math.round(progress)}%
-                  </Text>
-                </View>
-              </Animated.View>
-            </View>
+              <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden mb-3">
+                <div
+                  style={{ width: `${Math.min(progress, 100)}%` }}
+                  className={`h-full rounded-full transition-all ${progress >= 100 ? 'bg-emerald-500' : 'bg-white'}`}
+                />
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                  ${goal.currentAmount} saved
+                </span>
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+                  {Math.round(progress)}%
+                </span>
+              </div>
+            </div>
           );
         })}
-      </View>
+      </div>
 
-      <Modal
-        visible={isAdding}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setIsAdding(false)}
-      >
-        <KeyboardAvoidingView 
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          className="flex-1 bg-black/60 justify-center p-6"
-        >
-          <View className={`bg-[#1A1A1A] rounded-[48px] p-10 relative border border-white/10 ${highLegibility ? 'border-2 border-white' : ''}`}>
-            <Animated.View 
-              entering={FadeIn}
-              exiting={FadeOut}
+      {/* Add Goal Modal */}
+      {isAdding && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-6 z-50">
+          <div className={`bg-[#1A1A1A] rounded-[48px] p-10 relative border border-white/10 w-full max-w-sm ${highLegibility ? 'border-2 border-white' : ''}`}>
+            <button
+              onClick={() => setIsAdding(false)}
+              className="absolute right-8 top-8 bg-transparent border-none cursor-pointer"
             >
-              <TouchableOpacity 
-                onPress={() => setIsAdding(false)}
-                className="absolute right-8 top-8"
+              <X size={24} color="rgba(255, 255, 255, 0.2)" />
+            </button>
+
+            <h2 className={`text-3xl font-serif italic text-white mb-8 ${highLegibility ? 'font-sans not-italic font-bold' : ''}`}>
+              New Goal
+            </h2>
+
+            <div className="flex flex-col gap-6">
+              <div>
+                <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3 block">
+                  What are you saving for?
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. New Shoes"
+                  value={newGoal.title}
+                  onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
+                  className={`w-full bg-white/5 border border-white/5 rounded-2xl py-5 px-6 text-white placeholder-white/10 outline-none focus:border-white/20 ${highLegibility ? 'border-2 border-white' : ''}`}
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3 block">
+                  How much do you need? ($)
+                </label>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  value={newGoal.targetAmount}
+                  onChange={(e) => setNewGoal({ ...newGoal, targetAmount: e.target.value })}
+                  className={`w-full bg-white/5 border border-white/5 rounded-2xl py-5 px-6 text-white placeholder-white/10 outline-none focus:border-white/20 ${highLegibility ? 'border-2 border-white' : ''}`}
+                />
+              </div>
+              <button
+                onClick={handleAdd}
+                className="w-full bg-white py-5 rounded-[32px] flex items-center justify-center gap-2 mt-4 cursor-pointer border-none hover:bg-white/90 transition-colors"
               >
-                <X size={24} color="rgba(255, 255, 255, 0.2)" />
-              </TouchableOpacity>
-              
-              <Text className={`text-3xl font-serif italic text-white mb-8 ${highLegibility ? 'font-sans not-italic font-bold' : ''}`}>
-                New Goal
-              </Text>
-              
-              <View className="space-y-6">
-                <View>
-                  <Text className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">
-                    What are you saving for?
-                  </Text>
-                  <TextInput 
-                    placeholder="e.g. New Shoes"
-                    placeholderTextColor="rgba(255, 255, 255, 0.1)"
-                    value={newGoal.title}
-                    onChangeText={(text) => setNewGoal({ ...newGoal, title: text })}
-                    className={`bg-white/5 border border-white/5 rounded-2xl py-5 px-6 text-white ${highLegibility ? 'border-2 border-white' : ''}`}
-                  />
-                </View>
-                <View>
-                  <Text className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">
-                    How much do you need? ($)
-                  </Text>
-                  <TextInput 
-                    placeholder="0.00"
-                    placeholderTextColor="rgba(255, 255, 255, 0.1)"
-                    keyboardType="numeric"
-                    value={newGoal.targetAmount}
-                    onChangeText={(text) => setNewGoal({ ...newGoal, targetAmount: text })}
-                    className={`bg-white/5 border border-white/5 rounded-2xl py-5 px-6 text-white ${highLegibility ? 'border-2 border-white' : ''}`}
-                  />
-                </View>
-                <TouchableOpacity 
-                  onPress={handleAdd}
-                  className="w-full bg-white py-5 rounded-[32px] items-center justify-center flex-row gap-2 mt-4"
-                >
-                  <Text className="text-black font-bold">Add Goal</Text>
-                  <CheckCircle2 size={20} color="black" />
-                </TouchableOpacity>
-              </View>
-            </Animated.View>
-          </View>
-        </KeyboardAvoidingView>
-      </Modal>
-    </View>
+                <span className="text-black font-bold">Add Goal</span>
+                <CheckCircle2 size={20} color="black" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
