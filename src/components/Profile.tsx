@@ -29,7 +29,7 @@ export const Profile: React.FC = () => {
   let currentAngle = 0;
 
   return (
-    <div className="flex-1 overflow-y-auto bg-black p-6 pb-24">
+    <div className="flex-1 bg-black p-6 pb-24">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className={cn("text-3xl font-serif italic text-white", highLegibility && "font-sans not-italic font-bold")}>

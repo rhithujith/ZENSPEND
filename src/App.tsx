@@ -28,11 +28,11 @@ const MainApp: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0A0502] relative overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#0A0502] relative overflow-hidden">
       {/* Atmosphere background */}
       <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundColor: '#064e3b' }} />
 
-      <div className="flex-1 relative" key={activeTab}>
+      <div className="flex-1 overflow-y-auto" key={activeTab}>
         {activeTab === 'home' && <Dashboard />}
         {activeTab === 'food' && <CravingMode />}
         {activeTab === 'profile' && <Profile />}

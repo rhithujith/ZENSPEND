@@ -25,7 +25,7 @@ export const Dashboard: React.FC = () => {
   const allowance = filter === 'Day' ? (currentBudget / 30).toFixed(2) : (currentBudget / 4).toFixed(2);
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 pb-24">
+    <div className="p-6 pb-24">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>

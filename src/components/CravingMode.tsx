@@ -74,7 +74,7 @@ export const CravingMode: React.FC = () => {
   ];
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 pb-24">
+    <div className="p-6 pb-24">
       <div className="space-y-2 mb-8">
         <p className="text-white/50 font-medium text-sm tracking-widest uppercase">Food</p>
         <h1 className={`text-4xl font-serif italic text-white ${highLegibility ? 'font-sans not-italic font-bold' : ''}`}>
